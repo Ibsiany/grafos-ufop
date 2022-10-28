@@ -323,6 +323,31 @@ public class GraphList {
         return smaller;
     }
 
+    void printDist(ArrayList<Integer> pred,int s, int d) {
+        ArrayList<Integer> aux = new ArrayList<>();
+
+        int aux_value = d;
+        int i = 0;
+
+        while (aux_value > 0) {
+            aux.add(aux_value);
+
+            aux_value = pred.get(aux_value);
+
+            i = i + 1;
+        }
+
+        aux.add(s);
+
+        System.out.print("Caminho: [");
+        
+        for(int j = aux.size() - 1; j >= 0; j--){
+            System.out.print(" " +aux.get(j)+ " " );
+        }
+
+        System.out.print("]\n");
+    }
+
     public void dijkstra(int s, int d) {
         int u;
 
@@ -361,6 +386,13 @@ public class GraphList {
                 }
             }
         }
+
+        if (pred.get(d) != -1) {
+            this.printDist(pred, s, d);
+          System.out.println("Custo: " + dist.get(d));
+        } else {
+          System.out.println("Não existe caminho entre a origem e o destino selecionados.");
+        }
     }
 
     void path(int parent[], int vertex, List<Integer> path) {
@@ -372,21 +404,21 @@ public class GraphList {
         path.add(vertex);
     }
 
-    public void bellmanford(int source, int n, int destiny) {
-        int dist[] = new int[n];
-        int parent[] = new int[n];
+    public void bellmanford(int source, int destiny) {
+        int dist[] = new int[this.getCountNodes()];
+        int parent[] = new int[this.getCountNodes()];
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < this.getCountNodes(); i++) {
             dist[i] = 999999;
         }
 
         dist[source] = 0;
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < this.getCountNodes(); i++) {
             parent[i] = -1;
         }
 
-        for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < this.getCountNodes() - 1; i++) {
             for (Edge edge : this.edgeList) {
                 int u = edge.getSource();
                 int v = edge.getSink();
@@ -420,50 +452,61 @@ public class GraphList {
         }
     }
 
-    public void floyd_warshall(int tam) {
-        int n = this.adjList.size();
-        for (int k = 0; k < n; k++) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    int smaller = Math.min(
-                            this.adjList.get(i).get(k).getWeight() + this.adjList.get(k).get(j).getWeight(),
-                            this.adjList.get(i).get(j).getWeight());
+    public void bellmanford_melhorado(int source, int destiny) {
+        int dist[] = new int[this.getCountNodes()];
+        int parent[] = new int[this.getCountNodes()];
 
-                    this.adjList.get(i).set(i, new Edge(i, k, smaller));
+        for (int i = 0; i < this.getCountNodes(); i++) {
+            dist[i] = 999999;
+        }
+
+        dist[source] = 0;
+
+        for (int i = 0; i < this.getCountNodes(); i++) {
+            parent[i] = -1;
+        }
+
+        boolean validat = false;
+
+        for (int i = 0; i < this.getCountNodes() - 1; i++) {
+
+            validat = false;
+
+            for (Edge edge : this.edgeList) {
+                int u = edge.getSource();
+                int v = edge.getSink();
+                int w = edge.getWeight();
+
+                if (dist[u] != 999999 && dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+
+                    parent[v] = u;
+
+                    validat = true;
                 }
             }
-        }
-    }
-
-    public void bellmanford_melhorado(int s, int d) {
-
-        int Inf = 9999999;
-        ArrayList<Integer> dist = new ArrayList<>();
-        ArrayList<Integer> pred = new ArrayList<>();
-        for (int i = 0; i < this.countNodes; i++) {
-            dist.add((int) Inf);
-            pred.add(-1);
-        }
-        dist.set(s, 0);
-        boolean trocou = false;
-
-        for (int i = 0; i < this.countNodes; i++) {
-            trocou = false;
-            for (int j = 0; j < this.countEdges; j++) {
-                if (dist.get(edgeList.get(j).getSink()) > dist.get(edgeList.get(j).getSource())
-                        + edgeList.get(j).getWeight()) {
-                    dist.set(edgeList.get(j).getSink(),
-                            dist.get(edgeList.get(j).getSource()) + edgeList.get(j).getWeight());
-                    pred.set(edgeList.get(j).getSink(), edgeList.get(j).getSource());
-                    trocou = true;
-                }
-            }
-            if (trocou == false) {
+            if (validat == false) {
                 break;
             }
-
         }
 
-    }
+        for (Edge edge : this.edgeList) {
+            int u = edge.getSource();
+            int v = edge.getSink();
+            int w = edge.getWeight();
 
+            if (dist[u] != 999999 && dist[u] + w < dist[v]) {
+                System.out.println("Negative-weight cycle is found!!");
+                return;
+            }
+        }
+
+        if (destiny != source && dist[destiny] < 999999) {
+            List<Integer> path = new ArrayList<>();
+            path(parent, destiny, path);
+            System.out.println("Caminho: " + path);
+
+            System.out.println("Custo: " + dist[destiny]);
+        }
+    }
 }
