@@ -111,7 +111,11 @@ class App {
                 case 2:
                     System.out.println("Informe o nome do arquivo:(Exemplo: files/maze/toy.txt)");
                     String filename = sc.next();
+                    long startTimeLabirinto = System.currentTimeMillis();
                     Labirinto labirinto = new Labirinto(filename);
+                    float totalTimeLabirinto = System.currentTimeMillis() - startTimeLabirinto;
+                    System.out.println("O tempo total foi de " + totalTimeLabirinto / 1000 + " segundos.");
+
                     break;
                 case 3:
                     break;
