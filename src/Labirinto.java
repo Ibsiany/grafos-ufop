@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -20,26 +19,24 @@ public class Labirinto {
         int qtdCol = line.length();
         this.grafo = new GraphList(qtdLinha * qtdCol);
 
-        char[][] charMatrix = new char[qtdLinha][qtdCol];
+        char[][] labirinto = new char[qtdLinha][qtdCol];
 
-        int i = 0;
+        labirinto[0] = line.toCharArray();
 
-        charMatrix[i] = line.toCharArray();
-        i++;
+        int i = 1;
+
         while (bufferedReader.ready()) {
-
             line = bufferedReader.readLine();
-            charMatrix[i] = line.toCharArray();
+            labirinto[i] = line.toCharArray();
 
             i++;
-
         }
 
         System.out.println();
         System.out.println("LABIRINTO:\n");
-        for (int u = 0; u < charMatrix.length; u++) {
-            for (int v = 0; v < charMatrix[u].length; v++) {
-                System.out.printf("%c", charMatrix[u][v]);
+        for (int u = 0; u < labirinto.length; u++) {
+            for (int v = 0; v < labirinto[u].length; v++) {
+                System.out.printf("%c", labirinto[u][v]);
             }
             System.out.println();
         }
@@ -54,27 +51,30 @@ public class Labirinto {
         for (int u = 0; u < qtdLinha; u++) {
             for (int v = 0; v < qtdCol; v++) {
 
-                if (charMatrix[u][v] == ' ' || charMatrix[u][v] == 'S' || charMatrix[u][v] == 'E') {
-                    if (charMatrix[u][v] == 'S') {
-                        s = u * qtdCol + v;
-                    }
-                    if (charMatrix[u][v] == 'E') {
-                        d = u * qtdCol + v;
-                    }
+                if (labirinto[u][v] == ' ' || labirinto[u][v] == 'S' || labirinto[u][v] == 'E') {
                     source = u * qtdCol + v;
-                    sink = u * qtdCol + v + 1;
-                    if (v < qtdCol - 1) {
+                    sink = source + 1;
+                    if (labirinto[u][v] == 'S') {
+                        s = source;
+                    }
+                    if (labirinto[u][v] == 'E') {
+                        d = source;
+                    }
+                    if (v < qtdCol - 1
+                            && (labirinto[u][v + 1] == ' ' || labirinto[u][v + 1] == 'S'
+                                    || labirinto[u][v + 1] == 'E')) {
                         this.grafo.addEdgeUnoriented((source), (sink), 1);
                     }
-                    if (u != 0) {
-                        this.grafo.addEdgeUnoriented((source - 1), (u - 1) * qtdCol + v, 1);
+                    if (u < qtdLinha - 1
+                            && (labirinto[u + 1][v] == ' ' || labirinto[u + 1][v] == 'S'
+                                    || labirinto[u + 1][v] == 'E')) {
+                        this.grafo.addEdgeUnoriented((source), ((u + 1) * qtdCol + v), 1);
                     }
                 }
             }
-
         }
 
-        this.grafo.dijkstra(s, d);
+        this.grafo.bellmanford(s, d);
 
         bufferedReader.close();
     }
