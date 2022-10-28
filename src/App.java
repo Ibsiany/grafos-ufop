@@ -36,25 +36,97 @@ import java.util.Scanner;
 
 class App {
     public static void main(String[] args) throws IOException {
-        GraphList g1 = new GraphList("files/cm/toy.txt"); // crio G1 usando lista
-        GraphMatrix g2 = new GraphMatrix("files/cm/toy.txt"); // crio g2 usando matriz
-        //System.out.println(g1);
+        String arquivos[] = new String[6];
+        arquivos[0] = "files/cm/toy.txt";
+        arquivos[1] = "files/cm/rg300_4730.txt";
+        arquivos[2] = "files/cm/rome99c.txt";
+        arquivos[3] = "files/cm/facebook_combined.txt";
+        arquivos[4] = "files/cm/USA-road-dt.DC.txt";
+        arquivos[5] = "files/cm/USA-road-dt.NY.txt";
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Informe a tarefa:");
+        System.out.println("1- Caminho Minimo");
+        System.out.println("2- Labirinto");
+        System.out.println("3- Sair");
+        int option = sc.nextInt();
         
-       g1.dijkstra(0, 4);
-    //    long startTime = System.currentTimeMillis();
-         g1.bellmanford(0, 4);
-    //     float totalTime = System.currentTimeMillis() - startTime;
-    //     System.out.println("O tempo total foi de " + totalTime / 1000 + " segundos.");
+        while (option != 3) {
+            switch (option) {
+                case 1:
+                System.out.println("Escolha o arquivo para testar:");
+                System.out.println("0 - toy.txt");
+                System.out.println("1 - rg300_4730.txt");
+                System.out.println("2 - rome99c.txt");
+                System.out.println("3 - facebook_combined.txt");
+                System.out.println("4 - USA-road-dt.DC.txt");
+                System.out.println("5 - USA-road-dt.NY.txt");
+                int arqOption = sc.nextInt();
+        
+                System.out.println("Insira a origem:");
+                int s = sc.nextInt();
+                System.out.println("Insira o destino:");
+                int d = sc.nextInt();
+        
+        
+                GraphList g1 = new GraphList(arquivos[arqOption]);
+               // GraphMatrix g2 = new GraphMatrix(arquivos[arqOption]);
+        
+                System.out.println();
+                System.out.println("[Dijkstra]");
+                System.out.println();
+                long startTime = System.currentTimeMillis();
+                 g1.dijkstra(s, d);
+                 float totalTime = System.currentTimeMillis() - startTime;
+                 System.out.println("O tempo total foi de " + totalTime / 1000 + " segundos.");
+        
+                 System.out.println();
+                 System.out.println("[Bellman Ford]");
+                 System.out.println();
+                 startTime = System.currentTimeMillis();
+                 g1.bellmanford(s, d);
+                 totalTime = System.currentTimeMillis() - startTime;
+                 System.out.println("O tempo total foi de " + totalTime / 1000 + " segundos.");
+        
+                 System.out.println();
+                 System.out.println("[Bellman Ford Melhorado]");
+                 System.out.println();
+                 startTime = System.currentTimeMillis();
+                 g1.bellmanford_melhorado(s, d);
+                 totalTime = System.currentTimeMillis() - startTime;
+                 System.out.println("O tempo total foi de " + totalTime / 1000 + " segundos.");
+        
+                 System.out.println();
+                 System.out.println("[Floyd Warshall]");
+                 System.out.println();
+                 startTime = System.currentTimeMillis();
+                 //g2.floydWarshall(s, d);
+                 totalTime = System.currentTimeMillis() - startTime;
+                 System.out.println("O tempo total foi de " + totalTime / 1000 + " segundos.");
+                    break;
+
+                case 2: //Insira aqui o problema do Labirinto
+                    System.out.println("Case 2");
+                    break;
+
+                case 3:
+                    break;
+
+                default:
+                    System.out.println("Opcao invalida!");
+            }
+            System.out.println();
+            System.out.println("Informe a tarefa:");
+            System.out.println("1- Caminho Minimo");
+            System.out.println("2- Labirinto");
+            System.out.println("3- Sair");
+            option = sc.nextInt();
+        }
 
 
-
-    //     long startTime2 = System.currentTimeMillis();
-    //     g1.bellmanford_melhorado(0, g1.getCountNodes(), 348);
-    //     float totalTime2 = System.currentTimeMillis() - startTime2;
-    //     System.out.println("O tempo total foi de " + totalTime2 / 1000 + " segundos.");
         
 
-        /*System.out.println("G1 FW matriz");
-        g2.floydWarshall(0, 3); */ 
+
     }
 }
