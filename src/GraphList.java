@@ -327,14 +327,11 @@ public class GraphList {
         ArrayList<Integer> aux = new ArrayList<>();
 
         int aux_value = d;
-        int i = 0;
 
         while (aux_value > 0) {
             aux.add(aux_value);
 
             aux_value = pred.get(aux_value);
-
-            i = i + 1;
         }
 
         aux.add(s);
