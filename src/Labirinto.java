@@ -53,39 +53,28 @@ public class Labirinto {
 
         for (int u = 0; u < qtdLinha; u++) {
             for (int v = 0; v < qtdCol; v++) {
+
                 if (charMatrix[u][v] == ' ' || charMatrix[u][v] == 'S' || charMatrix[u][v] == 'E') {
+                    if (charMatrix[u][v] == 'S') {
+                        s = u * qtdCol + v;
+                    }
+                    if (charMatrix[u][v] == 'E') {
+                        d = u * qtdCol + v;
+                    }
                     source = u * qtdCol + v;
                     sink = u * qtdCol + v + 1;
-                    if (charMatrix[u][v] == 'S') {
-
-                        this.grafo.addEdgeUnoriented((source), (sink), 10);
-
-                        s = source;
-                    }
-
-                    if (charMatrix[u][v] == 'E') {
-
-                        this.grafo.addEdgeUnoriented((source), (sink), 100);
-
-                        d = sink;
-                    }
-
                     if (v < qtdCol - 1) {
-
                         this.grafo.addEdgeUnoriented((source), (sink), 1);
-
                     }
-
                     if (u != 0) {
-
-                        this.grafo.addEdgeUnoriented((u * qtdCol + v), ((u - 1) * qtdCol + v), 1);
+                        this.grafo.addEdgeUnoriented((source - 1), (u - 1) * qtdCol + v, 1);
                     }
                 }
             }
 
         }
 
-        this.grafo.dijkstra(s, d - 1);
+        this.grafo.dijkstra(s, d);
 
         bufferedReader.close();
     }
