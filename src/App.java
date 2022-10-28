@@ -3,7 +3,9 @@ import java.io.IOException;
 // matAdj -> mais rápido, mas ocupa um espaço maior O(n).
 // listAdj -> ocupa menos espaço O(v + e).
 
-// isomorfo -> contem no outro
+// isomorfo -> contem no outro 
+
+// linha teste commit
 
 // Passeio -> qualquer conjunto de nós.
 // Trilha -> não é permitido repetir arestas.
