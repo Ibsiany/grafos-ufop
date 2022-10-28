@@ -5,7 +5,7 @@ import java.io.IOException;
 
 // isomorfo -> contem no outro 
 
-// linha teste commit
+// linha teste commit t
 
 // Passeio -> qualquer conjunto de nós.
 // Trilha -> não é permitido repetir arestas.
